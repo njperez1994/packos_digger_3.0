@@ -111,7 +111,7 @@ def upload():
         file.save(os.path.join(UPLOAD_FOLDER, file.filename))
         try:
             # Execute the script after a successful file upload
-            subprocess.run(['python', '../populate_database.py'], check=True)
+            subprocess.run(['python3', '../populate_database.py'], check=True)
             return jsonify({"success": True}), 200
         except subprocess.CalledProcessError as e:
             return jsonify({"error": "Failed to run script"}), 500

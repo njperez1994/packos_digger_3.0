@@ -8,9 +8,11 @@ from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
 from langchain_community.vectorstores import Chroma
 
-CHROMA_PATH = "chroma"
-DATA_PATH = "data"
-THUMBNAILS_PATH = "thumbnails"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+CHROMA_PATH = os.path.join(BASE_DIR, "chroma")
+DATA_PATH = os.path.join(BASE_DIR, "data")
+THUMBNAILS_PATH = os.path.join(BASE_DIR, "thumbnails")
 
 def main():
 
