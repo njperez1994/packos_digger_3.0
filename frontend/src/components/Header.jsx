@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/digger.png";
+import logo from "../assets/digger.png"; // Your logo image
 import UploadDocument from "./UploadDocument";
 import About from "./About";
 
@@ -15,7 +15,6 @@ export function Header() {
     // Retrieve user role from session storage
     const storedRole = sessionStorage.getItem("role");
     if (storedRole) {
-      console.log(storedRole)
       setRole(storedRole);
     }
   }, []);
@@ -25,14 +24,11 @@ export function Header() {
   };
 
   const toggleUploadPopup = () => {
-    console.log("Show Upload Document popup");
     setShowUploadPopup(!showUploadPopup);
     document.body.style.overflow = "auto";
   };
 
   const toggleAboutPopup = () => {
-    // Add your logic for showing the about section
-    console.log("Show About");
     setShowAboutPopup(!showAboutPopup);
     document.body.style.overflow = "auto";
   };
@@ -58,9 +54,16 @@ export function Header() {
   };
 
   return (
-    <header>
-      <nav className="navbar">
-        <button onClick={toggleMenu} type="button">
+    <header className="flex items-center justify-between pr-4 pb-3 pt-3">
+      {/* Logo and App Name */}
+      <div className="flex items-center space-x-2">
+        <img src={logo} alt="App Logo" className="w-8 h-8" />
+        <h1 className="text-1xl text-gray-800">Packos Digger RAG App</h1>        
+      </div>
+
+      {/* User Options */}
+      <div className="flex items-center space-x-4">
+        <button onClick={toggleMenu} className="relative">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -82,9 +85,9 @@ export function Header() {
           id="dropdownDots"
           className={`${
             menuVisible ? "" : "hidden"
-          } bg-white divide-y divide-gray-700 rounded-lg shadow w-44 dark:bg-white dark:divide-gray-600 menu`}
+          } bg-white divide-y divide-gray-700 rounded-lg shadow w-44 absolute top-12 right-0 mt-2 z-10`}
         >
-          <ul className="py-1 text-sm text-gray-700 dark:text-gray-700">
+          <ul className="py-1 text-sm text-gray-700">
             <li onClick={handleLogout} className="block px-4 py-1">
               Logout
             </li>
@@ -98,8 +101,8 @@ export function Header() {
             </li>
           </ul>
         </div>
-      </nav>
-      <img src={logo} alt="Digger Rag Documents Logo" className="logo" />
+      </div>
+
       {showUploadPopup && <UploadDocument onClose={toggleUploadPopup} />}
       {showAboutPopup && <About onClose={toggleAboutPopup} />}
     </header>
