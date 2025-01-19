@@ -131,13 +131,13 @@ html, body, #root {
   }
   
   #results-container {
-    width: 80%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 1024px;
     background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /*border-radius: 4px;*/
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
     padding: 20px;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
     margin-top: 40px;
     display: flex;
   }

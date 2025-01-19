@@ -2,12 +2,21 @@ from flask import Flask, request, jsonify, session, send_from_directory, url_for
 from flask_cors import CORS
 from flask_migrate import Migrate
 import os
+import sys
 import subprocess
 #from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
-#from langchain_community.llms.ollama import Ollama
-#from get_embedding_function import get_embedding_function
+from langchain_community.llms.ollama import Ollama
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))    # e.g. /path/to/rag/svc
+PARENT_DIR = os.path.dirname(CURRENT_DIR)                   # e.g. /path/to/rag
+sys.path.append(PARENT_DIR)
+from get_embedding_function import get_embedding_function
+
 from model import db,User
+from langchain_community.vectorstores import Chroma
+
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -35,8 +44,10 @@ Answer the question based only on the following context:
 Answer the question based on the above context: {question}
 """
 
-@app.route('/query', methods=['POST'])
+@app.route('/query', methods=['POST','OPTIONS'])
 def query():
+    if request.method == 'OPTIONS':
+        return _build_cors_preflight_response()
     data = request.get_json()
     query_text = data.get('query_text')
     if not query_text:
@@ -116,7 +127,7 @@ def upload():
             return jsonify({"error": "Failed to run script"}), 500
 
 # ----------User managements------
-CORS(app, supports_credentials=True, origins="http://localhost:5173")
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 
 @app.route('/signup', methods=['POST', 'OPTIONS'])
 def signup():
