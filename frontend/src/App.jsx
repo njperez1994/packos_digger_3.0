@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Header } from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import ShowResults from "./components/ShowResults";
-import { Outlet } from 'react-router-dom';
+import UploadDocument from './components/UploadDocument';
+import{
+  PlusCircleIcon,  
+}from "@heroicons/react/24/outline";
 
 function App() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [role, setRole] = useState(""); // State to store user role
+  const [showUploadPopup, setShowUploadPopup] = useState(false);
+
+  const toggleUploadPopup = () => {
+    setShowUploadPopup(!showUploadPopup);
+    document.body.style.overflow = "auto";
+  };
+
+  useEffect(() => {
+    // Retrieve user role from session storage
+    const storedRole = sessionStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
+    }
+  }, []);
 
   const handleSearch = async (searchTerm) => {
     // Reset states
@@ -45,17 +64,28 @@ function App() {
       <div className="flex flex-grow w-full space-x-4 rounded-xl mb-1">
 
         {/* Left Sidebar (for sources or additional content) */}
-        <div className="w-1/4 bg-gray-100 p-4 rounded-xl">
+        <div className="w-1/4 bg-gray-100 p-4 rounded-xl ">
           <h2 className="text-xs mb-6">Sources</h2>
           <hr className="border-t-2 border-gray-300 mb-4" />
-          {/* You can add your left sidebar content here */}
+          {role === "admin" && (             
+              <button
+                onClick={toggleUploadPopup}
+                className="center-button  flex items-center"
+              >
+                <PlusCircleIcon className="w-5 h-5 mr-1" />
+                <a href="#">Add Source</a>
+              </button>            
+          )}
+          <div>
+
+          </div>
         </div>
 
         {/* Middle Section (for displaying results) */}
         <div className="flex-1 p-4 bg-white overflow-y-auto rounded-xl shadow-md flex flex-col">
           <h2 className="text-xs mb-6">Results</h2>
           <hr className="border-t-2 border-gray-300 mb-4" />
-          
+
           {loading && (
             <div className="flex justify-center items-center mt-6">
               <div className="border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
@@ -65,7 +95,7 @@ function App() {
           {error && (
             <p className="text-red-500 mt-6">{`Error: ${error}`}</p>
           )}
-          
+
           {/* Content Area for ShowResults */}
           <div id="results-container" className="mt-6 flex-grow">
             {results && <ShowResults data={results} />}
@@ -81,11 +111,15 @@ function App() {
         <div className="w-1/4 bg-gray-50 p-4 rounded-xl">
           <h2 className="text-xs mb-6">Options</h2>
           <hr className="border-t-2 border-gray-300 mb-4" />
-          {/* You can add additional content like notes here */}
+          <div>
+
+          </div>
         </div>
       </div>
-      
-    </div>
+
+      {showUploadPopup && <UploadDocument onClose={toggleUploadPopup} />}
+
+    </div>  
   );
 }
 

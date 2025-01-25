@@ -104,5 +104,15 @@ header .user-options .menu li a {
   text-decoration: none;
   color: #333;
 }
+.center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%; /* Ensures button takes up just enough space */
+  border-radius: 0.9rem;  
+  border:1px solid black;  
+}
 
 /* Optional: You can style the logo and menu items more specifically */
