@@ -93,12 +93,21 @@ function App() {
             </div>
           )}
           {error && (
-            <p className="text-red-500 mt-6">{`Error: ${error}`}</p>
+            <p className="text-red-500 flex justify-center items-center mt-6">{`Can't Obtain The Information: ${error}`}</p>
           )}
 
-          {/* Content Area for ShowResults */}
-          <div id="results-container" className="mt-6 flex-grow">
-            {results && <ShowResults data={results} />}
+           {/* Content Area for ShowResults */}
+           <div id="results-container" className="mt-6 flex-grow">
+            {results ? (
+              <ShowResults data={results} />
+            ) : (
+              !loading && !error && (
+                <div className="text-center mt-6 text-gray-500">
+                  <h3 className="text-xl">Welcome to the Digger RAG App!</h3>
+                  <p>Start by entering a query in the search bar to explore your documents.</p>
+                </div>
+              )
+            )}
           </div>
 
           {/* SearchBar to make the query */}
